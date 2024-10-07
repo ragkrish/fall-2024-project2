@@ -19,7 +19,7 @@ int ready(int pid, int resch)
 	pptr = &proctab[pid];
 	pptr->pstate = PRREADY;
 	if (getschedclass() == LINUXSCHED) {
-		insert(pid, rdyhead, pptr->pprio + pptr->counter);
+		insert(pid, rdyhead, pptr->goodness);
 	} else {
 		insert(pid, rdyhead, pptr->pprio);
 	}
