@@ -8,6 +8,7 @@
 #include <mem.h>
 #include <io.h>
 #include <stdio.h>
+#include <sched.h>
 
 LOCAL int newpid();
 
@@ -50,6 +51,12 @@ SYSCALL create(procaddr,ssize,priority,name,nargs,args)
 	pptr->fildes[0] = 0;	/* stdin set to console */
 	pptr->fildes[1] = 0;	/* stdout set to console */
 	pptr->fildes[2] = 0;	/* stderr set to console */
+
+	// LINUX SCHEDULING
+	if (getschedclass() == LINUXSCHED) {
+		pptr->counter = 0;
+		pptr->goodness = 0;
+	}
 
 	for (i=3; i < _NFILE; i++)	/* others set to unused */
 		pptr->fildes[i] = FDFREE;
